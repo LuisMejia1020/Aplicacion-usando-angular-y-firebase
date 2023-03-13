@@ -13,8 +13,6 @@ import { TaskDialogResult } from './task-dialog/task-dialog.component';
 export class AppComponent {
   title = 'my-app';
 
-  
-
   todo: ITask[] = [
     {
       title: 'Buy milk',
@@ -26,12 +24,30 @@ export class AppComponent {
     }
   ];
 
-
-
   inProgress: ITask[] = [];
   done: ITask[] = [];
 
-  editTask(list: string, task: ITask): void {}
+  editTask(list: 'done' | 'todo' | 'inProgress', task: ITask): void {
+    const dialogRef = this.dialog.open(TaskDialogComponent, {
+      width: '270px',
+      data: {
+        task,
+        enableDelete: true,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result: TaskDialogResult|undefined) => {
+      if (!result) {
+        return;
+      }
+      const dataList = this[list];
+      const taskIndex = dataList.indexOf(task);
+      if (result.delete) {
+        dataList.splice(taskIndex, 1);
+      } else {
+        dataList[taskIndex] = task;
+      }
+    });
+  }
 
   drop(event: CdkDragDrop<ITask[]>): void {
     if (event.previousContainer === event.container) {
@@ -47,7 +63,6 @@ export class AppComponent {
       event.currentIndex
     );
   }
-
 
   constructor(private dialog: MatDialog) {}
 
@@ -67,6 +82,5 @@ export class AppComponent {
         this.todo.push(result.task);
       });
   }
-
 
 }
