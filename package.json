@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nuevaAplicacion": "ng new my-app"
+    "nuevaAplicacion": "ng new my-app",
+    "nuevoMaterial":"ng add @angular/material"
   },
   "repository": {
     "type": "git",
